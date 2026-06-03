@@ -200,9 +200,18 @@ class StreamCDEPS(GenericXML):
                     # if PLUMBER2 is in the stream name
                     # we want to use PLUMBER2.PLUMBER2SITE instead of CLM_USRDAT.PLUMBER2
                     continue
+                # [PORTED by Hui Tang: support split CLM_USRDAT streams (.Solar/.Precip/.TPQW).
+                #  Stream names like "CLM_USRDAT.ALP2.Solar" look up XML entry
+                #  "CLM_USRDAT.$CLM_USRDAT_NAME.Solar"; the bare "CLM_USRDAT.ALP2" form still
+                #  resolves to "CLM_USRDAT.$CLM_USRDAT_NAME" for backward compatibility.]
+                parts = stream_name.split(".")
+                if len(parts) >= 3:
+                    lookup_name = "CLM_USRDAT.$CLM_USRDAT_NAME." + ".".join(parts[2:])
+                else:
+                    lookup_name = "CLM_USRDAT.$CLM_USRDAT_NAME"
                 self.stream_nodes = super(StreamCDEPS, self).get_child(
                     "stream_entry",
-                    {"name": "CLM_USRDAT.$CLM_USRDAT_NAME"},
+                    {"name": lookup_name},
                     err_msg="No stream_entry {} found".format(stream_name),
                 )
             elif stream_name:

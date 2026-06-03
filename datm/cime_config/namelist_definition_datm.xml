@@ -54,7 +54,7 @@
         PLUMBER2.$PLUMBER2SITE
       </value>
       <value datm_mode="1PT" model_grid="CLM_USRDAT">
-        CLM_USRDAT.$CLM_USRDAT_NAME
+        CLM_USRDAT.$CLM_USRDAT_NAME.Solar,CLM_USRDAT.$CLM_USRDAT_NAME.Precip,CLM_USRDAT.$CLM_USRDAT_NAME.TPQW
       </value>
       <value datm_mode="CORE2_NYF" >
         CORE2_NYF.GISS,CORE2_NYF.GXGXS,CORE2_NYF.NCEP

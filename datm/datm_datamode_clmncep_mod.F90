@@ -326,7 +326,15 @@ contains
 
     ! Direct copies of stream fields
     Sa_tbot(:) = strm_Sa_tbot(:)
-    Faxa_swdn(:) = strm_Faxa_swdn(:)
+    ! [PORTED by Hui Tang: handle split shortwave streams (swdndf+swdndr) — when the input
+    !  stream supplies direct+diffuse components instead of a combined Faxa_swdn, sum them
+    !  here. Without this guard, line `Faxa_swdn(:) = strm_Faxa_swdn(:)` segfaults on the
+    !  null pointer for split-form streams (matches associated() check at line ~446).]
+    if (associated(strm_Faxa_swdn)) then
+       Faxa_swdn(:) = strm_Faxa_swdn(:)
+    else
+       Faxa_swdn(:) = strm_Faxa_swdndf(:) + strm_Faxa_swdndr(:)
+    end if
     if (associated(strm_Sa_topo)) then
        Sa_topo(:) = strm_Sa_topo(:)
     else
